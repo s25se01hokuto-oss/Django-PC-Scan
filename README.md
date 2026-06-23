@@ -1,1 +1,23 @@
-# Django-PC-Scan
+# 教室PC死活監視システム (classroom-ping / alive-check)
+
+LAN内にある教室PCの稼働状況（死活状態）を、ブラウザ上でリアルタイムに可視化するDjangoベースのシステムです。
+
+## 💡 特徴とこだわったポイント (Key Features & Highlights)
+
+- **ファイアウォールを回避するパッシブARPキャッシュ監視**
+  監視対象のWindows PCがICMP PingやTCPポート疎通を拒否（ドロップ）する環境でも確実に死活状態を検出するため、サーバー側のLinuxカーネルARPキャッシュ（`arp -an`）を利用して状態を検出する仕組みを実装しました。
+- **DBキャッシュによる高速表示**
+  バックエンドのカスタム管理コマンド（`check_arp`）がcronで定期的にARPテーブルを走査してSQLiteを更新。Web側はDBから即座に応答を返すため、画面表示のロード遅延がありません。
+- **サイバーパンク風ダッシュボードUI**
+  CSS Gridを活用し、実際の教室の座席レイアウト（5行×7列）に合わせたネオン調の近未来風UIで直感的に稼働状況を把握できます。
+
+## 🛠 技術スタック (Tech Stack)
+
+- **Backend:** Python 3.14 / Django 4.2+
+- **Database:** SQLite3
+- **Frontend:** HTML5 / CSS3 (CSS Grid)
+- **OS/Infrastructure:** Ubuntu 24.04 (VirtualBox) / cron
+
+## 🚀 今後の展望 (Future Work)
+- [ ] 管理画面から座席レイアウト（行・列）を動的に変更できる機能の追加
+- [ ] 過去の稼働状況のログから、Markdown形式でレポートを自動生成・閲覧できる機能（`reports_list_view` などの統合）
